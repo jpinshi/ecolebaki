@@ -49,30 +49,30 @@ function getInvoiceAction()
       <p>Les information concernant le beneficiaire</p>
       <table style="width:100%" style="font-size:14px;">
       <tr>
-        <td style="width:0.3em;">Code paie </td>
+        <td style="width:0.3em;font-weight:bold;">Code paie </td>
         <td>: '.$_SESSION['idpay'].'</td>
       </tr>
         <tr>
-          <td style="width:0.3em;">Nom du beneficiaire </td>
-          <td>:'.$_SESSION['namePupil'].'</td>
+          <td style="width:0.3em;font-weight:bold;">Nom du beneficiaire </td>
+          <td>: '.$_SESSION['namePupil'].'</td>
         </tr>
         <tr>
-          <td style="width:0.3em;">Promotion </td>
+          <td style="width:0.3em;font-weight:bold;">Promotion </td>
           <td>: '.$_SESSION['level'].'</td>
         </tr>
         <tr>
-          <td style="width:0.3em;">Année scolaire </td>
+          <td style="width:0.3em;font-weight:bold;">Année scolaire </td>
           <td>: '.$_SESSION['anasco'].'</td>
         </tr>
 
         <tr>
-          <td style="width:0.3em;">Montant payé </td>
+          <td style="width:0.3em;font-weight:bold;">Montant payé </td>
           <td>: 10$</td>
         </tr>
       </table>
     <br>
     <h4 style="text-align:right;">Signature du percepteur<br/>
-      Merhi Nsitu
+        '.$_SESSION['username'].'
     </h4>
     <hr>
     </div>   ';
@@ -96,7 +96,8 @@ function getInvoiceAction()
     // ---------------------------------------------------------
 
     //Close and output PDF document
-    $pdf->Output('example_0231.pdf', 'D');
+    $namefileOutPut='invoice- '.$_SESSION['idpay'].date('d/m/yyyy').' '.date('h:m:s').'.pdf';
+    $pdf->Output($namefileOutPut, 'D');
 
   //getPrinter('Sub');
 }

@@ -3,7 +3,7 @@
     if (!isset($_SESSION['uid'])) {
         header('Location:login');
     }
-    
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,7 +71,7 @@
                             <?php echo $_SESSION['anasco']?>
                         </span>
                     </label>
-                   
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -83,12 +83,12 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Data View des eleves 
+                            Data View des eleves
                             <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary">Liste des paiements <i class="fa fa-table"></i></a>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                          
+
                         <ul class="nav nav-tabs" >
                         <li class="active"><a href="#{{activeTab.year}}" data-toggle="tab">{{activeTab.year}}</a>
                         </li>
@@ -99,11 +99,11 @@
                             <!-- Tab panes -->
                             <div class="tab-content" >
                                 <div class="tab-pane fade in active" id="{{activeTab.year}}">
-                                    
+
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>Matricule</th>
                                         <th>Nom de l'eleve</th>
                                         <th>Genre</th>
@@ -112,17 +112,17 @@
                                     </tr>
                                 </thead>
                                 <tbody style="cursor:pointer">
-                                   
-                                  
+
+
                                 </tbody>
                             </table>
                                 </div>
                                 <div ng-repeat="data in list_years" class="tab-pane fade" id="year{{$index}}">
-                                  
+
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables{{$index}}">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>Matricule</th>
                                         <th>Nom de l'eleve</th>
                                         <th>Genre</th>
@@ -131,14 +131,14 @@
                                     </tr>
                                 </thead>
                                 <tbody style="cursor:pointer">
-                                   
-                                  
+
+
                                 </tbody>
                             </table>
                                 </div>
-                              
-                                
-                                
+
+
+
                             </div>
                         </div>
             </div>
@@ -147,7 +147,7 @@
                                 Launch Date after
                             </button>
 
-                            
+
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -162,44 +162,42 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Creer un paiment
-                      
+
                         </div>
                         <div class="panel-body">
-                        
+
                             <div class="row">
 
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6" style="width:100%">
                                     <form method="post">
-                                        <div class="form-group">
-                                            <label class="control-label" for="inputSuccess">Nom complet</label>
-                                            <input type="text" ng-model="namePupil" id="namePupil" class="form-control">
-                                        </div>
+
                                         <div class="form-group">
                                             <label>Type de frais</label>
-                                            <select class="form-control" id="sex">
+                                            <select class="form-control" id="cbofrais">
                                                 <option>-----</option>
-                                                <option value="M">Masculin</option>
-                                                <option value="F">Feminin</option>
+                                                <option value="1TRF">1ere tranche</option>
+                                                <option value="2TRF">2eme tranche</option>
+                                                <option value="3TRF">3eme tranche</option>
 
                                             </select>
-                                
+
                                         <div class="form-group">
-                                            <label class="control-label"  for="inputSuccess">Telephone</label>
-                                            <input type="text" id="phone" class="form-control">
+                                            <label class="control-label"  for="inputSuccess">Montant a payer</label>
+                                            <input type="number" id="amount" class="form-control">
                                         </div>
 
 
 
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
-                               
+
 
                                     </form>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-paiement">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>Id ticket</th>
                                         <th>Type paie.</th>
                                         <th>Tranche</th>
@@ -208,8 +206,8 @@
                                     </tr>
                                 </thead>
                                 <tbody style="cursor:pointer">
-                                   
-                                  
+
+
                                 </tbody>
                             </table>
 

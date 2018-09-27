@@ -9,8 +9,8 @@
         private $db;
         private $logged="";
 
-    
-        
+
+
         public function getLogger($userid,$pwd){
             $db=getDB();
             $QuerySlice="SELECT * FROM t_slice_payment";
@@ -18,7 +18,7 @@
             $SQL_PREPARE->execute();
             $SlicePayment=$SQL_PREPARE->fetchAll(PDO::FETCH_OBJ);
 
-            $Query="SELECT _MATR,_USERNAME,_PRIORITY,_CODE_DIRECTION,_ANASCO FROM t_login login JOIN t_agent agent ON login._MATR_AGENT=agent._MATR".
+            $Query="SELECT _MATR,_USERNAME,_PRIORITY,_CODE_DIRECTION,_ANASCO,_NAME FROM t_login login JOIN t_agent agent ON login._MATR_AGENT=agent._MATR".
                    " WHERE login._USERNAME=:userid AND login._PWD=:pwd";
 
                    $SQL_PREPARE=$db->prepare($Query);
@@ -27,7 +27,7 @@
                        "pwd"=>md5($pwd)
                    ));
                    $Login=$SQL_PREPARE->fetchAll(PDO::FETCH_OBJ);
-                
+
                    if (sizeof($Login)==1) {
 
                     $users=$this->getCounterStats($Login[0]->_CODE_DIRECTION);
@@ -67,7 +67,7 @@
             );
             $response=$sql->fetchAll(PDO::FETCH_OBJ);
             return $response;
-            
+
 
         }
 
@@ -93,7 +93,7 @@
                     $response=$sql->fetchAll(PDO::FETCH_OBJ);
 
                 break;
-                
+
                 default:
                 $Query="SELECT ".
                 "students._MAT,students._NAME,students._SEX,students._PICTURE FROM t_students AS students ".
@@ -131,7 +131,7 @@
                     );
                     $response=$sql->fetchAll(PDO::FETCH_OBJ);
                     break;
-                
+
                 default:
                     $Query="SELECT * FROM t_agent WHERE _CODE_DIRECTION=:direction";
                     $sql=$db->prepare($Query);

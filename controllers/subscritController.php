@@ -79,9 +79,9 @@ class SubscritController
             $_SESSION['idpay']=$payGenerate;
             $_SESSION['namePupil']=$name;
             if($data->niveau==1){
-                $_SESSION["level"]=$niveau."ere ".$section;
+                $_SESSION["level"]=$level."ere ".$section;
             }else{
-                $_SESSION["level"]=$niveau."eme ".$section;
+                $_SESSION["level"]=$level."eme ".$section;
             }
             $_SESSION['subject']="Inscription";
             //$this->getPDFInvoiceLayout();

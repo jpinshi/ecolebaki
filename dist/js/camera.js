@@ -5,7 +5,7 @@ var context=canvas.getContext('2d');
 var localStream;
 var photo=document.querySelector('#img');
 var video=document.querySelector('#videoCam'),vendoUrl=window.URL || windowwebkitURL;
-navigator.getMedia=navigator.getUserMedia || 
+navigator.getMedia=navigator.getUserMedia ||
 				   navigator.webkitGetUserMedia ||
 				   navigator.mozGetUserMedia ||
 				   navigator.msGetUserMedia;
@@ -28,5 +28,5 @@ btnCapture.onclick=function() {
 	photo.style="z-index:0;width:200px;height:200px;cursor:pointer;";
 	document.querySelector('#picture').value=base64;
 
-	
+
 }

@@ -74,7 +74,7 @@ session_start();
                             <!-- /.modal -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Nouvel eleve     <?php echo $_SESSION['idpay'];?> <i class="fa fa-user fa-fw" style="float:right"></i></h1>
+                    <h1 class="page-header">Nouvel eleve <i class="fa fa-user fa-fw" style="float:right"></i></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>

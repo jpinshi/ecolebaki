@@ -1,0 +1,7 @@
+images/
+pages/*.html
+pages/session.php
+nbproject
+vendor/
+composer.lock
+composer.phar

@@ -8,7 +8,13 @@ RewriteRule ^listpupils/(.*)/(.*)/(.*)$ controllers/TaskPupils.php?depart=$1&yea
 RewriteRule ^viewpupils$ pages/viewpupils.php
 RewriteRule ^listpupils$ controllers/TaskPupils.php
 RewriteRule ^listpayments$ controllers/TaskPayment.php
+RewriteRule ^addpayment$ controllers/TaskPayment.php
+RewriteRule ^loadslices$ controllers/TaskPayment.php
+RewriteRule ^getpayments$ controllers/TaskPayment.php
 RewriteRule ^listyears$ controllers/TaskPupils.php
 RewriteRule ^payments$ pages/payments.php
+RewriteRule ^reportings-pay$ pages/reportingPay.php
 RewriteRule ^md5$ controllers/md5.php
 RewriteRule ^layoutinvoice$ controllers/pdf.php
+RewriteRule ^invoice$ controllers/TaskPayment.php?invoice
+RewriteRule ^sessionvar$ pages/session.php

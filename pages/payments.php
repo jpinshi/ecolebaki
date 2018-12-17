@@ -64,6 +64,8 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
+                <div style="display: none;" class="alert alert-success" role="alert" id="success_alert"></div>
+                <div style="display: none;" class="alert alert-danger" role="alert" id="danger_alert"></div>
                     <label class="page-header" style="width: 100%;font-size: 16px;">
                         <i class="fa fa-users"></i> Tableau des données | paiements
 
@@ -76,7 +78,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="loader" id="loader">
-                <img src="dist/images/loader/loader.gif">
+                <img src="dist/images/loader/loader-x.gif">
             </div>
             <!-- /.row -->
             <div class="row" style="display: none;" id="tableView">
@@ -84,7 +86,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Data View des eleves
-                            <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary">Liste des paiements <i class="fa fa-table"></i></a>
+                            <a style="float:right;margin:-.5em 0 0 1em" href="invoice" class="btn btn-primary hidden" id = "invoice">Dernier paiement <i class="fa fa-table"></i></a>
+                            <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary hidden">Liste des paiements <i class="fa fa-table"></i></a>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -101,40 +104,39 @@
                                 <div class="tab-pane fade in active" id="{{activeTab.year}}">
 
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                <thead>
-                                    <tr>
+                                        <thead>
+                                            <tr>
+                                                <th>Matricule</th>
+                                                <th>Nom de l'eleve</th>
+                                                <th>Genre</th>
+                                                <th>Classe</th>
+                                                <th>Section</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="cursor:pointer">
 
-                                        <th>Matricule</th>
-                                        <th>Nom de l'eleve</th>
-                                        <th>Genre</th>
-                                        <th>Classe</th>
-                                        <th>Section</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="cursor:pointer">
 
-
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div ng-repeat="data in list_years" class="tab-pane fade" id="year{{$index}}">
 
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables{{$index}}">
-                                <thead>
-                                    <tr>
+                                        <thead>
+                                            <tr>
 
-                                        <th>Matricule</th>
-                                        <th>Nom de l'eleve</th>
-                                        <th>Genre</th>
-                                        <th>Classe</th>
-                                        <th>Section</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="cursor:pointer">
+                                                <th>Matricule</th>
+                                                <th>Nom de l'eleve</th>
+                                                <th>Genre</th>
+                                                <th>Classe</th>
+                                                <th>Section</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="cursor:pointer">
 
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
                                 </div>
 
 
@@ -146,7 +148,7 @@
             <button style="display:none;" id="btn_date_after" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                                 Launch Date after
                             </button>
-
+            <a href="invoice" target="_blank"><button style="display:none;" id="invoice_link">Show invoice</button></a>
 
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -161,7 +163,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Creer un paiment
+                            Enregistrer un paiment
 
                         </div>
                         <div class="panel-body">
@@ -170,46 +172,49 @@
 
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6" style="width:100%">
-                                    <form method="post">
-
+                                    <form method="post" id="add_payment_form">
+                                        <p style="color:red" id="error_msg"></p>
+                                        <input type="hidden" class="form-control" id="mat_pupil" name="mat_pupil" >
+                                        <input type="hidden" class="form-control" id="name_pupil" name="name_pupil" >
+                                        <input type="hidden" class="form-control" id="level" name="level" >
+                                        <input type="hidden" class="form-control" id="section" name="section" >
+                                            
                                         <div class="form-group">
-                                            <label>Type de frais</label>
-                                            <select class="form-control" id="cbofrais">
-                                                <option>-----</option>
-                                                <option value="1TRF">1ere tranche</option>
-                                                <option value="2TRF">2eme tranche</option>
-                                                <option value="3TRF">3eme tranche</option>
+                                            
+                                            <label for="slice">Type de frais</label>
+                                            <select class="form-control" id="slice" name="slice" >
+                                                <option value="">-----</option>
 
                                             </select>
 
-                                        <div class="form-group">
-                                            <label class="control-label"  for="inputSuccess">Montant a payer</label>
-                                            <input type="number" id="amount" class="form-control">
+                                            <div class="form-group">
+                                                <label class="control-label"  for="amount">Montant à payer</label>
+                                                <input type="number" class="form-control" id="amount" name="amount">
+                                            </div>
+
+
+
                                         </div>
-
-
-
-                                </div>
-                                <!-- /.col-lg-6 (nested) -->
+                                        <!-- /.col-lg-6 (nested) -->
 
 
                                     </form>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-paiement">
-                                <thead>
-                                    <tr>
+                                        <thead>
+                                            <tr>
 
-                                        <th>Id ticket</th>
-                                        <th>Type paie.</th>
-                                        <th>Tranche</th>
-                                        <th>Montant</th>
-                                        <th>Date paie.</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="cursor:pointer">
+                                                <th>Id ticket</th>
+                                                <th>Tranche</th>
+                                                <th>Type de Frais</th>
+                                                <th>Montant</th>
+                                                <th>Date de paiement</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="cursor:pointer">
 
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
 
                                 </div>
                             </div>
@@ -223,8 +228,8 @@
             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                            <button type="button" id="submitPayment" class="btn btn-primary">Enregistrer</button>
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->

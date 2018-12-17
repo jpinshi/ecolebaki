@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-static-top" id="menuBar" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -246,6 +246,15 @@
                                 </li>
                                 <li>
                                     <a href="payments"><i class="fa fa-plus fa-fw"></i> Paiements</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-alt fa-fw"></i> Reporting<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="reportings-pay"><i class="fa fa-money fa-fw"></i> Paiements</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

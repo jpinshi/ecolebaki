@@ -21,7 +21,8 @@ if (!empty($_POST['user']) && !empty($_POST['pwd'])) {
                      $_SESSION['direction']=$login[0]->_CODE_DIRECTION;
                      $_SESSION['priority']=$login[0]->_PRIORITY;
                      $_SESSION['anasco']=$login[0]->_ANASCO;
-                     $_SESSION['slices']=$slices[0];
+                    //  $_SESSION['slices']=$slices[0];
+                     $_SESSION['slices']=$slices;
                      $_SESSION['counter_users']=sizeof($users);
                      $_SESSION['list_users']=$users;
                      $_SESSION['pupils']=$pupils;

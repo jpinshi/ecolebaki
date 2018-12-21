@@ -164,7 +164,7 @@ class payments {
         $departement = $param['departement'];
         $frais = $param['frais'];
 
-        $Query = "SELECT pupils._MAT,pupils._NAME,pupils._SEX,payment._AMOUNT,payment._IDPAY,payment._DATEPAY,payment._TIMEPAY FROM t_payment payment JOIN t_students pupils ON payment._MATR=pupils._MAT
+        $Query = "SELECT pupils._MAT,pupils._NAME,pupils._SEX,payment._AMOUNT,payment._IDPAY,payment._DATEPAY,payment._TIMEPAY, payment._USER_AGENT FROM t_payment payment JOIN t_students pupils ON payment._MATR=pupils._MAT
           JOIN t_subscription subscript ON pupils._MAT=subscript._MATR_PUPIL
           WHERE payment._ANASCO=:year AND payment._CODE_SLICE=:frais AND subscript._CODE_CLASS=:level AND subscript._CODE_SECTION=:option
           AND payment._DEPARTMENT=:departement ORDER BY payment._DATEPAY DESC";
@@ -205,7 +205,8 @@ class payments {
                 "_AMOUNT" => $value->_AMOUNT,
                 "_IDPAY" => $value->_IDPAY,
                 "_DATEPAY" => $value->_DATEPAY,
-                "_TIMEPAY" => $value->_TIMEPAY
+                "_TIMEPAY" => $value->_TIMEPAY,
+                "_AGENT" => $value->_USER_AGENT
             );
             $tabPay[$key] = $tabCurrent;
         }

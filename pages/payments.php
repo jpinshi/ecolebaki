@@ -78,7 +78,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="loader" id="loader">
-                <img src="dist/images/loader/loader-x.gif">
+                <img src="dist/images/loader/spinner.gif">
             </div>
             <!-- /.row -->
             <div class="row" style="display: none;" id="tableView">

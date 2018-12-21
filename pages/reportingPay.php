@@ -36,7 +36,7 @@ if (!isset($_SESSION['uid'])) {
         <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" type="text/css">
         <link href="dist/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
-
+        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -48,9 +48,21 @@ if (!isset($_SESSION['uid'])) {
             #loader{
                 width: 100%;
                 text-align: center;
-                margin: 7em 0em 20em 0em;
+                /* margin: 7em 0em 20em 0em; */
+            }
+            .alert{
+                position:absolute;
+                z-index: 100;
+                /* opacity: 0.8; */
+                right:0;
+                text-align: center;
+                width: 300px;
             }
         </style>
+        <script>
+        
+            
+        </script>
     </head>
 
     <body ng-app='app' ng-controller="CtrlStudent">
@@ -59,17 +71,18 @@ if (!isset($_SESSION['uid'])) {
             <?php require_once 'partials/menu-bar.php'; ?>
             <div id="page-wrapper">
                 <div class="row">
+                <div style="display: none;" class="alert alert-info" role="alert" id="info_alert">Message</div>
                     <div class="loader" id="loader">
-                        <img src="dist/images/loader/loader-x.gif">
+                        <img src="dist/images/loader/spinner.gif">
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" ng-show="!isLoading"  id="header" style="display:none">
                         <h4>  
                             <?php echo "DIRECTION : CS BAKI / " . $_SESSION['direction']; ?>
                         </h4>
                         <label id="lbldepartement" style="display:none;"><?php echo $_SESSION['direction']; ?></label>
                     </div>
                 </div>
-                <div class="row" id="ctrl1" ng-show="!isVisibeCtrl">
+                <div class="row" id="ctrl1" ng-show="!isVisibeCtrl" style="display:none">
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading" style="height:3.3em">
@@ -139,7 +152,7 @@ if (!isset($_SESSION['uid'])) {
                 </div>
                 <!-- / row -->
 
-                <div class="row" id="blockPaie" ng-show="!isVisibeCtrl">
+                <div class="row" id="blockPaie" ng-show="!isVisibeCtrl" style="display:none">
                     <!-- block -->
                     <div class="col-lg-12">
                         <div class="panel panel-default">
@@ -195,8 +208,8 @@ if (!isset($_SESSION['uid'])) {
                                             <th>IDPAY</th>
                                             <th>DATEPAIE</th>
                                             <th>HEUREPAIE</th>
+                                            <th>PERCEPTEUR</th>
                                             <th>MONTANT</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -207,8 +220,8 @@ if (!isset($_SESSION['uid'])) {
                                             <td>{{row._IDPAY}}</td>
                                             <td>{{row._DATEPAY}}</td>
                                             <td>{{row._TIMEPAY}}</td>
+                                            <td>{{row._AGENT}}</td>
                                             <td>{{row._AMOUNT}}</td>
-
                                         </tr>
 
 
@@ -295,7 +308,7 @@ if (!isset($_SESSION['uid'])) {
                     echo $_SESSION['RESUB'];
                     ?>
                 </label>
-                <div class="row" id="blockPrinter" ng-show="isVisibeCtrl">
+                <div class="row" id="blockPrinter" ng-show="isVisibeCtrl" style="display:none">
                     <!-- panel -->
                     <div class="panel panel-default">
 
@@ -336,7 +349,9 @@ if (!isset($_SESSION['uid'])) {
                                         <tr>
                                             <th>MATRICULE</th>
                                             <th>NOM ELEVE</th>
-                                            <th>DATEPAIE</th>
+                                            <th>GENRE</th>
+                                            <th>DATE</th>
+                                            <th>HEURE</th>
                                             <th>MONTANT</th>
 
                                         </tr>
@@ -346,9 +361,9 @@ if (!isset($_SESSION['uid'])) {
                                             <td>{{row.mat}}</td>
                                             <td>{{row.namePupil}}</td>
                                             <td>{{row.sexPupil}}</td>
+                                            <td>{{row.datePay}}</td>
+                                            <td>{{row.timePay}}</td>
                                             <td>{{row.amount}}</td>
-
-
                                         </tr>
 
 
@@ -378,12 +393,15 @@ if (!isset($_SESSION['uid'])) {
                     </div>
                     <!-- /.panel -->
                 </div>
-                <button ng-show="isVisibeCtrl" id="btnprint" type="button" ng-click="print()" class="btn btn-success">
-                    <i class="fa fa-print"></i> Imprimer la liste
-                </button>
-                <button type="button" ng-click="quitprint()" id="btnqprint" ng-show="isVisibeCtrl" class="btn btn-success">
-                    <i class="fa fa-print"></i> Quitter impression
-                </button>
+                <div ng-show="!isLoading" id="buttonsPrint" style="display:none">
+                    <button ng-show="isVisibeCtrl" id="btnprint" type="button" ng-click="print()" class="btn btn-success print">
+                        <i class="fa fa-print"></i> Imprimer la liste
+                    </button>
+                    <button type="button" ng-click="quitprint()" id="btnqprint" ng-show="isVisibeCtrl" class="btn btn-success print">
+                        <i class="fa fa-print"></i> Quitter impression
+                    </button>
+                </div>
+                
 
 
             </div>
@@ -391,10 +409,34 @@ if (!isset($_SESSION['uid'])) {
 
         </div>
         <!-- /#wrapper -->
-
+        <!-- UI dialog -->
+        <div style="display:none">
+        <div id="alert-message" title="Alerte" class="ui-state-error">
+            <p>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 50px 0;"></span>
+            <span id="alert-text"></span>
+            </p>
+        </div>
+        <div id="info-message" title="Information" class="ui-state-highlight">
+            <p>
+            <span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 50px 0;"></span>
+            <span id="info-text"></span>
+            </p>
+        </div>
+        <div id="dialog-confirm" title="Confirmation de l'opération">
+            <p>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+            <span id="confirm-text"></span>
+            </p>
+        </div>
+        </div>
+        <!-- /UI dialog -->
+        <script>
+            
+        </script>
         <!-- jQuery -->
         <script src="vendor/jquery/jquery.min.js"></script>
-
+        
         <!-- Bootstrap Core JavaScript -->
         <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -413,11 +455,7 @@ if (!isset($_SESSION['uid'])) {
         <script src="dist/js/services.js"></script>
         <script src="dist/js/reportController.js"></script>
         <script src="dist/js/bootstrap-datepicker.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                document.querySelector('#loader').style = "display:none";
-            });
-        </script>
+        
 
     </body>
 

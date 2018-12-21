@@ -1,9 +1,27 @@
 app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
     // alert(document.querySelector('#lbl_year').innerHTML);
 
-    $scope.isVisibilityPay = false;
+    
+    $(document).ready(function(){
+        document.querySelector('#loader').style = "display:none";
+        document.querySelector('#header').style = "display:normal";
+        document.querySelector('#ctrl1').style = "display:normal";
+        document.querySelector('#blockPaie').style = "display:normal";
+        document.querySelector('#blockPrinter').style = "display:normal";
+        document.querySelector('#buttonsPrint').style = "display:normal";
+    });
+    
     $scope.sendRequestTab = function () {
+        
+        //document.querySelector('.print').style = "display:none";
+        
+        
         if ($scope.cbo_year != undefined && $scope.cbo_frais != undefined && $scope.cbo_promotion != undefined) {
+            $scope.isLoading = true;
+            $scope.isVisibeCtrl = true;
+            document.querySelector('#blockPrinter').style = "display:none";
+            document.querySelector('#loader').style = "display:normal";
+            
             $scope.tabGroupPupils = [];
             var promotion = $scope.cbo_promotion.toString().trim().split(" ");
             console.log(promotion.length);
@@ -14,13 +32,24 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
             $scope.arrayGroup = "";
             $scope.pupilGroup = [];
             var departement = document.querySelector('#lbldepartement').innerHTML;
-            var url = "../controllers/TaskPayment.php?departement=" + departement + "&year=" + $scope.cbo_year + "&frais=" + $scope.cbo_frais + "&level=" + level + "&option=" + option;
+            //var url = "../controllers/TaskPayment.php?departement=" + departement + "&year=" + $scope.cbo_year + "&frais=" + $scope.cbo_frais + "&level=" + level + "&option=" + option;
             factoryStudent.getListPayment($scope.cbo_year,level,option,$scope.cbo_frais,departement).then(
                 function(response){
                     console.log('Response:',response);
+                    $scope.totalPupils=parseInt(response.counter[0].COUNTER);
                    if (response.pupils!=undefined) {
-                        $scope.isVisibilityPay=true;
-    
+                       if($scope.totalPupils == 0)
+                       {
+                            $scope.isVisibilityPay=false;
+                            $scope.isLoading = false;
+                            $scope.isVisibeCtrl = false;
+                            document.querySelector('#blockPrinter').style = "display:none";
+                            document.querySelector('#loader').style = "display:none";
+                            
+                            document.querySelector('#info_alert').textContent = "Cette promotion n'a pas d'élèves!";
+                            $( "#info_alert" ).fadeIn( 500 );
+                            setTimeout(function () { $( "#info_alert" ).fadeOut( 1000 ); }, 2500);
+                       }
                    }
                     $scope.tablePay=response.pupils;
                     $scope.totalSlice=0;
@@ -44,7 +73,7 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                         default:
                             break;
                     }
-                    $scope.totalPupils=parseInt(response.counter[0].COUNTER);
+                    
                     $scope.totalGlobal=parseInt($scope.totalPupils) * parseInt($scope.totalSlice);
                     console.log("Total pupils: ",$scope.totalPupils);
                     console.log("Total slice: ",$scope.totalSlice);
@@ -56,9 +85,31 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                         $scope.totalTabpay+=parseInt(value._AMOUNT);
     
                     });
-                       $scope.resteTabpay = parseInt($scope.totalGlobal) - parseInt($scope.totalTabpay);
-                        console.log("Total pay:",$scope.totalTabpay);
-                        console.log("Rows Students :"+$scope.pupilGroup.length);
+                    $scope.resteTabpay = parseInt($scope.totalGlobal) - parseInt($scope.totalTabpay);
+                    console.log("Total pay:",$scope.totalTabpay);
+                    console.log("Rows Students :"+$scope.pupilGroup.length);
+                    if($scope.totalPupils != 0)
+                    {
+                        if($scope.totalTabpay != 0)
+                        {
+                            $scope.isVisibilityPay=true;
+                            $scope.isLoading = false;
+                            $scope.isVisibeCtrl = false;
+                            document.querySelector('#blockPrinter').style = "display:none";
+                            document.querySelector('#loader').style = "display:none";
+                        }else{
+                            document.querySelector('#loader').style = "display:none";
+                            $scope.isVisibilityPay=false;
+                            $scope.isLoading = false;
+                            $scope.isVisibeCtrl = false;
+                            document.querySelector('#blockPrinter').style = "display:none";
+                            document.querySelector('#loader').style = "display:none";
+                            document.querySelector('#info_alert').textContent = "Pas de paiements disponible !";
+                            $( "#info_alert" ).fadeIn( 500 );
+                            setTimeout(function () { $( "#info_alert" ).fadeOut( 1000 ); }, 2500);
+                        }
+                        
+                    }
     
                 },
                 function(error){
@@ -68,6 +119,7 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
 
         }
     }
+
     $scope.tablePayFormat=[];
     $scope.isVisibeCtrl=false;
     $scope.PrinteTabPay=function(){
@@ -94,6 +146,8 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                 mat:value._MAT,
                 namePupil:value._NAME,
                 sexPupil:value._SEX,
+                datePay:value._DATEPAY,
+                timePay:value._TIMEPAY,
                 amount:$scope.amount
             };
             $scope.tablePayFormat.push(pupilFormat);

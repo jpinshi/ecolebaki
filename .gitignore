@@ -3,5 +3,6 @@ pages/*.html
 pages/session.php
 nbproject
 vendor/
+html2pdf/
 composer.lock
 composer.phar

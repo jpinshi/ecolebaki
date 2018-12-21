@@ -17,4 +17,5 @@ RewriteRule ^reportings-pay$ pages/reportingPay.php
 RewriteRule ^md5$ controllers/md5.php
 RewriteRule ^layoutinvoice$ controllers/pdf.php
 RewriteRule ^invoice$ controllers/TaskPayment.php?invoice
+RewriteRule ^layoutinvoice$ controllers/pdf.php
 RewriteRule ^sessionvar$ pages/session.php

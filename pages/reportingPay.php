@@ -71,7 +71,7 @@ if (!isset($_SESSION['uid'])) {
             <?php require_once 'partials/menu-bar.php'; ?>
             <div id="page-wrapper">
                 <div class="row">
-                <div style="display: none;" class="alert alert-info" role="alert" id="info_alert">Message</div>
+                <div style="display: normal;" class="alert alert-info" role="alert" id="info_alert">Message</div>
                     <div class="loader" id="loader">
                         <img src="dist/images/loader/spinner.gif">
                     </div>

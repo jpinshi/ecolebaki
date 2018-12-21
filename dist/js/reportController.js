@@ -123,8 +123,7 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
     $scope.tablePayFormat=[];
     $scope.isVisibeCtrl=false;
     $scope.PrinteTabPay=function(){
-
-
+        
         $scope.totalGlobal=parseInt($scope.totalPupils) * parseInt($scope.totalSlice);
 
         $scope.nameCurrent="";
@@ -163,6 +162,7 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
         $scope.totalrestePay=$scope.totalGlobal-$scope.totalPayPrint;
 
         $scope.isVisibeCtrl=true;
+        document.querySelector('#blockPrinter').style = "display:block";
         document.querySelector('#menuBar').style.display="none";
 
     }

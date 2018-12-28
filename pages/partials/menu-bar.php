@@ -212,7 +212,7 @@
                         <li style="display:none;"><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="logout"><i class="fa fa-sign-out fa-fw"></i> Se déconnecter</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -236,10 +236,10 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="viewdashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="viewdashboard"><i class="fa fa-dashboard fa-fw"></i> Tableau de bord</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> Élèves<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-graduation-cap fa-fw"></i> Gestion des élèves<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="viewpupils"><i class="fa fa-plus fa-fw"></i> Inscription</a>

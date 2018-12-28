@@ -67,7 +67,7 @@ class SubscritController
             $query_execute=$db->prepare($Query);
             $query_execute->execute(array(
                 "matr"=>$matrGenerate,
-                "codeClass"=>($level==1?$level.'ere':$level.'eme'),
+                "codeClass"=>$level,
                 "codeSection"=>$section,
                 "dateSub"=>__DATE__,
                 "codePay"=>$payGenerate,

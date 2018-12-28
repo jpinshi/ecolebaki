@@ -162,8 +162,11 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
         $scope.totalrestePay=$scope.totalGlobal-$scope.totalPayPrint;
 
         $scope.isVisibeCtrl=true;
+        document.querySelector('#headerReport').style = "display:block";
+        $scope.headerReport=true;
         document.querySelector('#blockPrinter').style = "display:block";
         document.querySelector('#menuBar').style.display="none";
+        document.querySelector('#header').style.display="none";
 
     }
     $scope.print=function(){

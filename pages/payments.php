@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View payments</title>
+    <title>Voir les paiements</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -85,7 +85,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Data View des eleves
+                            Liste des élèves
                             <a style="float:right;margin:-.5em 0 0 1em" href="invoice" class="btn btn-primary hidden" id = "invoice">Dernier paiement <i class="fa fa-table"></i></a>
                             <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary hidden">Liste des paiements <i class="fa fa-table"></i></a>
                         </div>
@@ -107,7 +107,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Matricule</th>
-                                                <th>Nom de l'eleve</th>
+                                                <th>Nom de l'élève</th>
                                                 <th>Genre</th>
                                                 <th>Classe</th>
                                                 <th>Section</th>
@@ -126,7 +126,7 @@
                                             <tr>
 
                                                 <th>Matricule</th>
-                                                <th>Nom de l'eleve</th>
+                                                <th>Nom de l'élève</th>
                                                 <th>Genre</th>
                                                 <th>Classe</th>
                                                 <th>Section</th>
@@ -163,7 +163,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Enregistrer un paiment
+                            Enregistrer un paiement
 
                         </div>
                         <div class="panel-body">

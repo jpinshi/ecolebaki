@@ -6,7 +6,7 @@ if (isset($_SESSION['uid'])) {
   $sub=new subscritController();
   if ($_SERVER['REQUEST_METHOD']=='POST') {
 
-
+      
       $sub->Add(
         $_POST['name'],
         $_POST['sex'],

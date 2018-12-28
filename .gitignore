@@ -1,8 +1,8 @@
-images/
+# images/
 pages/*.html
 pages/session.php
-nbproject
+# nbproject
 vendor/
-html2pdf/
+# html2pdf/
 composer.lock
 composer.phar

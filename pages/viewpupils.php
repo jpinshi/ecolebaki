@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View pupils</title>
+    <title>Voir les élèves</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -76,15 +76,15 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="loader" id="loader">
-                <img src="dist/images/loader/loader-z.gif">
+                <img src="dist/images/loader/spinner.gif">
             </div>
             <!-- /.row -->
             <div class="row" style="display: none;" id="tableView">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Data View des eleves 
-                            <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary">Creer un eleve <i class="fa fa-plus"></i></a>
+                            Liste des élèves
+                            <a style="float:right;margin-top:-.5em" href="subscrit" class="btn btn-primary">Créer un nouvel élève <i class="fa fa-plus"></i></a>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -105,7 +105,7 @@
                                     <tr>
                                         
                                         <th>Matricule</th>
-                                        <th>Nom de l'eleve</th>
+                                        <th>Nom de l'élève</th>
                                         <th>Genre</th>
                                         <th>Classe</th>
                                         <th>Section</th>
@@ -124,7 +124,7 @@
                                     <tr>
                                         
                                         <th>Matricule</th>
-                                        <th>Nom de l'eleve</th>
+                                        <th>Nom de l'élève</th>
                                         <th>Genre</th>
                                         <th>Classe</th>
                                         <th>Section</th>
@@ -230,7 +230,7 @@
                                             <input type="text" id="address" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label"  for="inputSuccess">Telephone</label>
+                                            <label class="control-label"  for="inputSuccess">Téléphone</label>
                                             <input type="text" id="phone" class="form-control">
                                         </div>
 
@@ -293,8 +293,8 @@
             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                            <button type="button" class="btn btn-primary">Enregistrer</button>
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->

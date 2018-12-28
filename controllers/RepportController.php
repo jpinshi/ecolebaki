@@ -10,7 +10,6 @@ class RepportController{
         try {
             $html2pdf = new \HTML2PDF('P', 'A4', 'fr', true, 'UTF-8', 3);
             $html2pdf->pdf->SetDisplayMode('fullpage');
-            $html2pdf->setDefaultFont('helvetica');
             $html2pdf->writeHTML($content);
             $pdfname = "RP-".date('Ymd')."-".$_SESSION['idpay'].".pdf";
             $html2pdf->Output($pdfname,'D');

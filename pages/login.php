@@ -68,8 +68,10 @@
               }
             }
             ?>
-             
-                <div class="login-panel panel panel-default">
+                <div style="text-align:center;">
+                    <img src="dist/images/logo-reverse.png" style="width:70%;position:relative;bottom:0" alt="logo">
+                </div>
+                <div class="login-panel panel panel-default" style="margin-top:10px;">
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             Connectez-vous
@@ -86,7 +88,7 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="pwd" type="password" value="" required ng-model="user.password">
                                 </div>
-                                <div class="checkbox">
+                                <div class="checkbox" style="display:none">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>

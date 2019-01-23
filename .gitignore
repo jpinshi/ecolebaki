@@ -2,7 +2,7 @@
 pages/*.html
 pages/session.php
 # nbproject
-vendor/
+#vendor/
 # html2pdf/
 composer.lock
 composer.phar

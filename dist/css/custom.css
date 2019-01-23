@@ -1,6 +1,7 @@
 #loader{
     width: 100%;
     text-align: center;
+    margin: 0 auto;
     /* margin: 7em 0em 20em 0em; */
 }
 /* div h4, div.block-printer {

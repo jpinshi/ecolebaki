@@ -70,7 +70,8 @@ var iTable;
         var title_navbar=document.querySelector('#title_navbar');
         title_navbar=title_navbar.innerHTML.split('|')[1].trim();
         alert(title_navbar);
-        var url_get_list='listpupils/'+title_navbar+'/SUB/'+year;
+        // var url_get_list='listpupils/'+title_navbar+'/SUB/'+year;
+        var url_get_list='listpupils/'+title_navbar+'/'+year;
         console.log('URL 5:',url_get_list);
         $(document).ready(function() {
 

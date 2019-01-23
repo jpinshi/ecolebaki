@@ -37,14 +37,28 @@ if (!isset($_SESSION['uid'])) {
         <link href="dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" type="text/css">
         <link href="dist/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css">
 
-        <link href="dist/css/mybaki.css" rel="stylesheet" type="text/css">
-        
+        <link href="dist/css/custom.css" rel="stylesheet" type="text/css">
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style type="text/css" media="screen">
+          table td{
+              /* border: 1px solid #CFD1D2; */
+              padding:1mm;
+          }
+          td.value{
+              font-family: Arial, Helvetica, sans-serif;
+              width:450px;
+          }
+          td.label{
+              font-weight:bold;
+              width:200px;
+          }
+        </style>
 
     </head>
 
@@ -70,14 +84,14 @@ if (!isset($_SESSION['uid'])) {
                         <div>
                             <table style="width: 100%;">
                                 <tr>
-                                    <td style="text-align: left;width: 70%;"><h3 style="margin-bottom:1.3em;"> COMPLEXE SCOLAIRE BAKI <br>DIRECTION <?= $_SESSION['direction'] ?></h3> </td>
-                                    <td style="text-align: right; width: 30%"><img src="dist/images/logo-baki.png" width="110" alt="Logo"> </td>
+                                    <td style="text-align: left;width: 67%;"><h3 style="margin-bottom:22px;"> ECOLE BAKI / <?= $_SESSION['direction'] ?></h3>Nº12, Av. EZO <br>Q/YOLO-NORD<br>C/KALAMU.<br>Site web: http://www.ecolebaki.com </td>
+                                    <td style="text-align: right; width: 33%"><img src="dist/images/logo-reverse.png" width="150" alt="Logo"> </td>
                                 </tr>
-                                
+
                             </table>
                         </div>
                         <div style="text-align: center; margin-bottom: 30px; padding-bottom:10px; border-top:2px solid grey; border-bottom:2px solid grey;">
-                            <h3>REPORTING DES PAIEMENTS PAR PROMOTION</h3>
+                            <h2>REPORTING DES PAIEMENTS</h2>
                         </div>
                     </div>
                 </div>
@@ -100,24 +114,23 @@ if (!isset($_SESSION['uid'])) {
                                     <div class="form-group" style="float:left;padding-right:1em;">
                                         <label for="year">ANNEES SCOLAIRES</label>
 
-                                        <select id="year" ng-model="cbo_year" class="chzn-select" style="width:100%">
-                                            <option>2014-2015</option>
-                                            <option>2015-2016</option>
-                                            <option>2016-2017</option>
+                                        <select id="year" ng-model="cbo_year" ng-change="criteriaChanged()" class="chzn-select" style="width:100%">
+
                                             <option>2017-2018</option>
+                                            <option>2018-2019</option>
 
                                         </select>
                                     </div>
                                     <div class="form-group" style="float:left;padding-right:1em;">
                                         <label for="promotion">LES PROMOTIONS</label>
-                                        <select id="promotion" ng-model="cbo_promotion" class="chzn-select" style="width:100%">
+                                        <select id="promotion" ng-model="cbo_promotion" ng-change="criteriaChanged()" class="chzn-select" style="width:100%">
 
                                             <optgroup label="--MATERNELLE--"></optgroup>
                                             <option>1ère MATERNELLE</option>
                                             <option>2eme MATERNELLE</option>
                                             <option>3eme MATERNELLE</option>
 
-                                            <optgroup label="--PRIMAIRES--"></optgroup>
+                                            <optgroup label="--PRIMAIRE--"></optgroup>
                                             <option>1ere PRIMAIRE</option>
                                             <option>2eme PRIMAIRE</option>
                                             <option>3eme PRIMAIRE</option>
@@ -129,13 +142,14 @@ if (!isset($_SESSION['uid'])) {
                                     </div>
                                     <div class="form-group" style="float:left;padding-right:1em;">
                                         <label for="frais">LES FRAIS</label>
-                                        <select id="frais" class="chzn-select" ng-model="cbo_frais" style="width:100%">
+                                        <select id="frais" class="chzn-select" ng-model="cbo_frais" ng-change="criteriaChanged()" style="width:100%">
 
-                                            <optgroup label="--FRAIS INSCRIPTIONS--"></optgroup>
+                                            <!-- <optgroup label="--FRAIS INSCRIPTIONS--"></optgroup>
                                             <option value="SUB">INSCRIPTION</option>
-                                            <option value="RESUB">RE-INSCRIPTION</option>
+                                            <option value="RESUB">RE-INSCRIPTION</option> -->
 
                                             <optgroup label="--FRAIS SCOLAIRES--"></optgroup>
+                                            <option value="all">TOUTES</option>
                                             <option value="1TRF">1ere TRANCHE</option>
                                             <option value="2TRF">2eme TRANCHE</option>
                                             <option value="3TRF">3eme TRANCHE</option>
@@ -186,7 +200,7 @@ if (!isset($_SESSION['uid'])) {
                                             Type de frais
                                         </td>
                                         <td>
-                                            : {{cbo_frais}}
+                                            : <span class="txt_feesType"></span>
                                         </td>
                                     </tr>
                                     <!-- <tr>
@@ -257,8 +271,10 @@ if (!isset($_SESSION['uid'])) {
                 <?php
                 $SlicePayment = $_SESSION['slices'];
 // echo var_dump($SlicePayment);
-                foreach ($SlicePayment as $key => $value) {
+                $totalFRSCO = 0;
 
+                foreach ($SlicePayment as $key => $value) {
+                    $totalFRSCO += trim($value->_AMOUNT);
                     switch ($value->_CODESLICE) {
                         case '1TRF':
                             $_SESSION['1TRF'] = trim($value->_AMOUNT);
@@ -269,18 +285,12 @@ if (!isset($_SESSION['uid'])) {
                         case '3TRF':
                             $_SESSION['3TRF'] = trim($value->_AMOUNT);
                             break;
-                        case 'SUB':
-                            $_SESSION['SUB'] = trim($value->_AMOUNT);
-
-                            break;
-                        case 'RESUB':
-                            $_SESSION['RESUB'] = trim($value->_AMOUNT);
-                            break;
                         default:
                             $_SESSION["nothing"] = "Zero";
                             break;
                     }
                 }
+
                 ?>
                 <label for="" id="lbl1TRF" style="display:none;">
 
@@ -298,17 +308,12 @@ if (!isset($_SESSION['uid'])) {
                     echo $_SESSION['3TRF'];
                     ?>
                 </label>
-                <label for="" id="lblSUB" style="display:none;">
+                <label for="" id="lblFRSCO" style="display:none;">
+                    <?php
+                    echo $totalFRSCO;
+                    ?>
+                </label>
 
-                    <?php
-                    echo $_SESSION['SUB'];
-                    ?>
-                </label>
-                <label for="" id="lblRESUB" style="display:none;">
-                    <?php
-                    echo $_SESSION['RESUB'];
-                    ?>
-                </label>
                 <div class="row block-printer" id="blockPrinter" ng-show="isVisibeCtrl" style="display:none;">
                     <!-- panel -->
                     <div class="inner-block">
@@ -335,7 +340,7 @@ if (!isset($_SESSION['uid'])) {
                                     Type de frais
                                 </td>
                                 <td>
-                                    : {{cbo_frais}}
+                                    : <span class="txt_feesType"></span>
                                 </td>
                             </tr>
 
@@ -397,7 +402,7 @@ if (!isset($_SESSION['uid'])) {
                         <i class="fa fa-print"></i> Quitter impression
                     </button>
                 </div>
-                
+
 
 
             </div>
@@ -428,11 +433,11 @@ if (!isset($_SESSION['uid'])) {
         </div>
         <!-- /UI dialog -->
         <script>
-            
+
         </script>
         <!-- jQuery -->
         <script src="vendor/jquery/jquery.min.js"></script>
-        
+
         <!-- Bootstrap Core JavaScript -->
         <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -451,7 +456,7 @@ if (!isset($_SESSION['uid'])) {
         <script src="dist/js/services.js"></script>
         <script src="dist/js/reportController.js"></script>
         <script src="dist/js/bootstrap-datepicker.min.js"></script>
-        
+
 
     </body>
 

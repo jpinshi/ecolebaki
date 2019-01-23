@@ -120,8 +120,9 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
         var title_navbar = document.querySelector('#title_navbar');
         title_navbar = title_navbar.innerHTML.split('|')[1].trim();
         //alert(title_navbar);
-        var url_get_list = 'listpupils/' + title_navbar + '/SUB/' + year;
-        console.log('URL:', url_get_list);
+        // var url_get_list = 'listpupils/' + title_navbar + '/SUB/' + year;
+        var url_get_list = 'listpayments/' + title_navbar + '/' + year;
+        console.log('URL 1:', url_get_list);
         $(document).ready(function () {
 
             if (table == undefined)
@@ -195,12 +196,45 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
         $('#dataTables' + index + ' tbody').on('click', 'tr', function (e) {
             var data = table.data();
             var index = e.target._DT_CellIndex.row;
-            //console.log('Data: ',data[index]);
-
+            console.log('Data: ',data[index]);
+            
             document.querySelector('#btn_date_after').click();
             document.querySelector('#LabelName').innerHTML = data[index].name_pupil;
 
-
+            var tablePay = $('#dataTables-paiement').DataTable({
+                destroy: true,
+                aaData: data[index].payinfo,
+                responsive: true,
+                aoColumns: [
+                    {"mDataProp": "id_pay"},
+                    {"mDataProp": "slice_pay"},
+                    {"mDataProp": "fee_object"},
+                    {"mDataProp": "amount_payed"},
+                    {"mDataProp": "date_pay"}
+                ],
+                "language": {
+                    "sProcessing": "Traitement en cours...",
+                    "sSearch": "Rechercher&nbsp;:",
+                    "sLengthMenu": "Afficher _MENU_ &eacute;l&eacute;ments",
+                    "sInfo": "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                    "sInfoEmpty": "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+                    "sInfoFiltered": "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                    "sInfoPostFix": "",
+                    "sLoadingRecords": "Chargement en cours...",
+                    "sZeroRecords": "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                    "sEmptyTable": "Aucune donn&eacute;e disponible dans le tableau",
+                    "oPaginate": {
+                        "sFirst": "Premier",
+                        "sPrevious": "Pr&eacute;c&eacute;dent",
+                        "sNext": "Suivant",
+                        "sLast": "Dernier"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": activer pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+                    }
+                }
+            });
 
         });
     }
@@ -282,12 +316,11 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
         $('#slice').empty();
         $.ajax({
             url: 'loadslices',
-            data: 'getslices', // we send $_GET['getslices']
-            dataType: 'json', // we want a JSON return
+            data: 'getslices', 
+            dataType: 'json',
             success: function (json) {
                 $('#slice').append('<option value="">-------</option>');
-                $.each(json, function (index, value) { // pour chaque noeud JSON
-                    // on ajoute l option dans la liste
+                $.each(json, function (index, value) {
                     $('#slice').append('<option value="' + index + '" label="' + value + '">' + value + '</option>');
                 });
             }

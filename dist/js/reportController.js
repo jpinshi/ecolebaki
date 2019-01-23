@@ -1,7 +1,7 @@
 app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
     // alert(document.querySelector('#lbl_year').innerHTML);
 
-    
+
     $(document).ready(function(){
         document.querySelector('#loader').style = "display:none";
         document.querySelector('#header').style = "display:normal";
@@ -9,19 +9,44 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
         document.querySelector('#blockPaie').style = "display:normal";
         document.querySelector('#blockPrinter').style = "display:normal";
         document.querySelector('#buttonsPrint').style = "display:normal";
+
     });
-    
+
+    $scope.criteriaChanged = function(){
+      console.log('Criteria changed');
+      //alert('Criteria changed');
+      document.querySelector('#preview').style.display = "none";
+
+      switch (document.querySelector('#frais').value) {
+          case "1TRF":
+              document.querySelector('.txt_feesType').innerHTML = "1ère Tranche";
+              break;
+          case "2TRF":
+              document.querySelector('.txt_feesType').innerHTML = "2ème Tranche";
+              break;
+          case "3TRF":
+              document.querySelector('.txt_feesType').innerHTML = "3ème Tranche";
+              break;
+          case "all":
+              document.querySelector('.txt_feesType').innerHTML = "Tout";
+              break;
+          default:
+              break;
+      }
+    }
+
     $scope.sendRequestTab = function () {
-        
+
         //document.querySelector('.print').style = "display:none";
-        
-        
+
+
         if ($scope.cbo_year != undefined && $scope.cbo_frais != undefined && $scope.cbo_promotion != undefined) {
             $scope.isLoading = true;
             $scope.isVisibeCtrl = true;
             document.querySelector('#blockPrinter').style = "display:none";
             document.querySelector('#loader').style = "display:normal";
-            
+
+
             $scope.tabGroupPupils = [];
             var promotion = $scope.cbo_promotion.toString().trim().split(" ");
             console.log(promotion.length);
@@ -45,12 +70,13 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                             $scope.isVisibeCtrl = false;
                             document.querySelector('#blockPrinter').style = "display:none";
                             document.querySelector('#loader').style = "display:none";
-                            
+
                             document.querySelector('#info_alert').textContent = "Cette promotion n'a pas d'élèves!";
                             $( "#info_alert" ).fadeIn( 500 );
                             setTimeout(function () { $( "#info_alert" ).fadeOut( 1000 ); }, 2500);
                        }
                    }
+
                     $scope.tablePay=response.pupils;
                     $scope.totalSlice=0;
                     //console.log("Total slice: ",$scope.totalSlice);
@@ -64,16 +90,13 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                         case "3TRF":
                             $scope.totalSlice=parseInt(document.querySelector('#lbl3TRF').innerHTML);
                             break;
-                        case "SUB":
-                            $scope.totalSlice=parseInt(document.querySelector('#lblSUB').innerHTML);
-                            break;
-                        case "RESUB":
-                            $scope.totalSlice=parseInt(document.querySelector('#lblRESUB').innerHTML);
+                        case "all":
+                            $scope.totalSlice=parseInt(document.querySelector('#lblFRSCO').innerHTML);
                             break;
                         default:
                             break;
                     }
-                    
+
                     $scope.totalGlobal=parseInt($scope.totalPupils) * parseInt($scope.totalSlice);
                     console.log("Total pupils: ",$scope.totalPupils);
                     console.log("Total slice: ",$scope.totalSlice);
@@ -83,34 +106,31 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
                     $scope.totalTabpay=0;
                     angular.forEach($scope.tablePay,function(value,key){
                         $scope.totalTabpay+=parseInt(value._AMOUNT);
-    
+
                     });
                     $scope.resteTabpay = parseInt($scope.totalGlobal) - parseInt($scope.totalTabpay);
                     console.log("Total pay:",$scope.totalTabpay);
                     console.log("Rows Students :"+$scope.pupilGroup.length);
                     if($scope.totalPupils != 0)
                     {
+                        document.querySelector('#blockPrinter').style = "display:none";
+                        $scope.isLoading = false;
+                        $scope.isVisibeCtrl = false;
+                        document.querySelector('#loader').style = "display:none";
+
                         if($scope.totalTabpay != 0)
                         {
                             $scope.isVisibilityPay=true;
-                            $scope.isLoading = false;
-                            $scope.isVisibeCtrl = false;
-                            document.querySelector('#blockPrinter').style = "display:none";
-                            document.querySelector('#loader').style = "display:none";
+                            document.querySelector('#preview').style.display = "block";
                         }else{
-                            document.querySelector('#loader').style = "display:none";
                             $scope.isVisibilityPay=false;
-                            $scope.isLoading = false;
-                            $scope.isVisibeCtrl = false;
-                            document.querySelector('#blockPrinter').style = "display:none";
-                            document.querySelector('#loader').style = "display:none";
-                            document.querySelector('#info_alert').textContent = "Pas de paiements disponible !";
+                            document.querySelector('#info_alert').textContent = "Aucun élève n'a payé dans cette promotion !";
                             $( "#info_alert" ).fadeIn( 500 );
-                            setTimeout(function () { $( "#info_alert" ).fadeOut( 1000 ); }, 2500);
+                            setTimeout(function () { $( "#info_alert" ).fadeOut( 1000 ); }, 2800);
                         }
-                        
+
                     }
-    
+
                 },
                 function(error){
                     console.log(error);
@@ -123,7 +143,7 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
     $scope.tablePayFormat=[];
     $scope.isVisibeCtrl=false;
     $scope.PrinteTabPay=function(){
-        
+
         $scope.totalGlobal=parseInt($scope.totalPupils) * parseInt($scope.totalSlice);
 
         $scope.nameCurrent="";

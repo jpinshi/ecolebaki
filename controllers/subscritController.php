@@ -13,7 +13,7 @@ class SubscritController
         echo json_encode($this);
     }
 
-    public function Add($name,$sex,$phone,$town,$address,$born_town,$birthday,$section,$level,$picture){
+    public function Add($name,$sex,$phone,$town,$address,$born_town,$birthday,$section,$level,$picture,$amount = 10){
         try{
         $matrGenerate=$_SESSION['direction'].time();
         if (strlen($picture)>0) {
@@ -49,8 +49,8 @@ class SubscritController
                $query_execute->execute(array(
                    "idpay"=>$payGenerate,
                    "matr"=>$matrGenerate,
-                   "codeSlice"=>"SUB",
-                   "object"=>"SUB",
+                   "codeSlice"=>"1TRF",
+                   "object"=>"FRSCO",
                    "datepay"=>__DATE__,
                    "timepay"=>__TIME__,
                    "amount"=>"10",
@@ -78,38 +78,46 @@ class SubscritController
 
             $_SESSION['idpay']=$payGenerate;
             $_SESSION['namePupil']=$name;
-            if($data->niveau==1){
-                $_SESSION["level"]=$level."ere ".$section;
+            $_SESSION['amount'] = $amount;
+            if($level == 1){
+                $_SESSION["level"]=$level."ère ".$section;
             }else{
-                $_SESSION["level"]=$level."eme ".$section;
+                $_SESSION["level"]=$level."ème ".$section;
             }
-            $_SESSION['subject']="Inscription";
+            $result = queryDB("SELECT _AMOUNT FROM t_slice_payment WHERE _CODESLICE = '1TRF'");
+            $sliceAmount = $result->fetch();
+            $total1TRF = $sliceAmount->_AMOUNT;
+            // $_SESSION['subject']="Inscription";
+            $_SESSION['motifPay'] = $total1TRF == $amount ? "1ERE TRANCHE - FRAIS SCOLAIRE" : "ACOMPTE - 1ERE TRANCHE - FRAIS SCOLAIRE";
             //$this->getPDFInvoiceLayout();
+            
+            $remaining_amount = $total1TRF - $amount;
+            $_SESSION['remaining_amount'] = $remaining_amount;
 
-         echo '<meta http-equiv="refresh" content=0;URL=layoutinvoice>';
+         echo '<meta http-equiv="refresh" content=0;URL=invoice>';
        }catch(Exception $e){
            echo $e->getMessage();
        }
     }
-    public function get_list_pupils($direction,$year,$object){
+    public function get_list_pupils($direction,$year){
         $db=getDB();
-        $query_sql="SELECT pupils._ID as id, pupils._MAT as matricule,pupils._NAME AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
-        subscrit._CODE_SECTION AS section,pupils._PICTURE as picture,pupils._PHONE AS phone, pupils._ADRESS AS adress, pupils._BIRTHDAY AS datenaiss,pupils._BIRTHPLACE as townBorn,pupils._PROVINCE AS townFrom "
-                    ."FROM t_students AS pupils JOIN t_payment AS payments "
-                    ."ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL ".
-                    "WHERE _DEPARTMENT=:department AND _ANASCO=:year AND (_OBJECT='RESUB' OR _OBJECT='SUB')";
+        $query_sql="SELECT DISTINCT(pupils._ID) AS id, pupils._MAT AS matricule,pupils._NAME AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
+        subscrit._CODE_SECTION AS section,pupils._PICTURE AS picture,pupils._PHONE AS phone, pupils._ADRESS AS adress, pupils._BIRTHDAY AS datenaiss,pupils._BIRTHPLACE as townBorn,pupils._PROVINCE AS townFrom
+                    FROM t_students AS pupils JOIN t_payment AS payments
+                    ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
+                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
         $query_execute=$db->prepare($query_sql);
         $query_execute->execute
         (
             array
             (
                 'department'=>$direction,
-                'year'=>$year,
+                'year'=>$year
                 //'object'=>$object,
                 //'resub'=>'RESUB'
             )
         );
-        $tabs=$query_execute->fetchAll(PDO::FETCH_OBJ);
+        $tabs=$query_execute->fetchAll();
         $response=json_encode($tabs);
         echo $response;
     }
@@ -117,11 +125,11 @@ class SubscritController
 
 
         $db=getDB();
-        $query_sql="SELECT pupils._ID as id, pupils._MAT as matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
-        subscrit._CODE_SECTION as section "
-                    ."FROM t_students AS pupils JOIN t_payment AS payments "
-                    ."ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL ".
-                    "WHERE _DEPARTMENT=:department AND _ANASCO=:year AND (_OBJECT='SUB' OR _OBJECT='RESUB')";
+        $query_sql="SELECT DISTINCT(pupils._ID) as id, pupils._MAT as matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
+        subscrit._CODE_SECTION as section
+                    FROM t_students AS pupils JOIN t_payment AS payments
+                    ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
+                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
         $query_execute=$db->prepare($query_sql);
         $query_execute->execute
         (
@@ -131,7 +139,7 @@ class SubscritController
                 'year'=>$_SESSION['anasco']
             )
         );
-        $tabs=$query_execute->fetchAll(PDO::FETCH_OBJ);
+        $tabs=$query_execute->fetchAll();
         $response=json_encode($tabs);
         $_SESSION['list_current_pupils']=$response;
         $_SESSION['counter_pupil']=sizeof(json_decode($response));
@@ -142,7 +150,7 @@ class SubscritController
         $query="SELECT * FROM t_years_school ORDER BY year DESC LIMIT 0,3";
         $query_execute=$db->prepare($query);
         $query_execute->execute();
-        $response=$query_execute->fetchAll(PDO::FETCH_OBJ);
+        $response=$query_execute->fetchAll();
         return $response;
     }
 

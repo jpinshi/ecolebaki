@@ -3,16 +3,16 @@ session_start();
 ob_start();
 ?>
 <style type="text/css">
-    
+
     page{
-        color: #424242;
+        /* color: #424242; */
     }
     table td{
         /* border: 1px solid #CFD1D2; */
         padding:1mm;
     }
     td.value{
-        font-family: Arial, Helvetica, sans-serif;   
+        font-family: Arial, Helvetica, sans-serif;
         width:450px;
     }
     td.label{
@@ -23,20 +23,20 @@ ob_start();
 </style>
 <page backtop="10mm" backbottom="10mm" backleft="10mm" backright="10mm">
     <page_header>
-        <div style="margin-left:10mm;margin-right:10mm; color:#424242;">
+        <div style="margin-left:10mm;margin-right:10mm;">
             <table style="width: 100%;">
                 <tr>
                     <td style="text-align: left;width: 33%;"><h3 style="margin-bottom:25px;">ECOLE BAKI / <?= $_SESSION['direction'] ?></h3>Nº12, Av. EZO <br>Q/YOLO-NORD<br>C/KALAMU.<br>Site web: http://www.ecolebaki.com</td>
                     <td style="text-align: center;width: 34%;"></td>
-                    <td style="text-align: right; width:33%"><img src="../dist/images/logo-baki.png" width=150 alt=""> </td>
+                    <td style="text-align: right; width:33%"><img src="../dist/images/logo-reverse.png" width=150 alt=""> </td>
                 </tr>
                 
             </table>
-            
+
             <div style="width: 100%; height:2px; background-color:grey;"></div>
         </div>
-        
-    
+
+
     </page_header>
     <page_footer>
         <table>
@@ -53,12 +53,12 @@ ob_start();
     <div style="width: 100%; height:2px; background-color:grey;margin-bottom:50px;"></div>
     <div style="text-align: right;"><span style="font-weight:bold;">Date :</span> <?= date('d/m/Y'); ?></div>
     <table style="font-size:14px;">
-        
+
         <tr>
             <td class="label">Nom du beneficiaire </td>
             <td class="value">: <?= $_SESSION['namePupil'] ?></td>
         </tr>
-        
+
         <tr>
             <td class="label">Promotion </td>
             <td class="value">: <?= $_SESSION['level'] ?></td>

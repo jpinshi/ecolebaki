@@ -8,6 +8,8 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
         $(document).ready(function () {
             console.log('222');
 
+            
+
             var table = $('#dataTables-example').DataTable({
                 ajax: {
                     url: 'pupilstoreenrol',
@@ -66,18 +68,19 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
                 var fieldAmount = document.querySelector("#amount");
                 var checkbox  = document.querySelector("#pass_switcher");
                 var checkbox2  = $("#pass_switcher");
-                changeSwitch('.js-switch',true);
-
+                
                 if(data[index].level == 6 && data[index].section == 'PRIMAIRE'){
-                    document.querySelector('#new_section').value = '';
-                    document.querySelector('#new_level').value = '';
-                    // document.querySelector("#pass_switcher").removeAttribute("checked");
-                    btnSubmit.setAttribute("disabled","disabled");
-                    fieldAmount.setAttribute("disabled","disabled");
-
+                    document.querySelector('#new_section').value = 'PRIMAIRE';
+                    document.querySelector('#new_level').value = '6ème';
+                    
+                    checkbox.checked = false;
+                    checkbox.setAttribute("disabled","disabled");
+                    $("#response").html("L'élève double");
                 }else{
-                  btnSubmit.setAttribute("disabled","disabled");
-                  fieldAmount.setAttribute("disabled","disabled");
+                    
+                    checkbox.checked = true;
+                    checkbox.removeAttribute("disabled");
+                    $("#response").html("L'élève passe");
 
                   if(data[index].level == 3 && data[index].section == 'MATERNELLE'){
                       document.querySelector('#new_section').value = 'PRIMAIRE';
@@ -87,25 +90,13 @@ app.controller('ViewPupilsCtrl', function ($scope, $http) {
                     document.querySelector('#new_level').value = (parseInt(data[index].level) + 1) + 'ème';
                   }
 
-                  if(btnSubmit.hasAttribute("disabled")){
-                    btnSubmit.removeAttribute("disabled");
-                  }
-                  if(fieldAmount.hasAttribute("disabled")){
-                    fieldAmount.removeAttribute("disabled");
-                  }
-
                 }
 
 
             });
 
 
-            function changeSwitch(sltor,active) {
-                var check = $(sltor).get(0);
-                if ( (!check.checked && active) || (check.checked && !active) ){
-                    $(check).next('span').trigger('click')
-                }
-            }
+            
 
 
         });//end of document ready

@@ -157,7 +157,7 @@ if (!isset($_SESSION['uid'])) {
                                                               <div class="col-md-5 col-md-offset-7" style="margin-bottom:5px;">
                                                                   <div class="form-group" style="margin-bottom:2px;">
                                                                       <label>
-                                                                          <input type="checkbox" class="js-switch" id="pass_switcher"  /><span id="response" style="margin-left:10px">L'élève passe</span>
+                                                                          <input type="checkbox" id="pass_switcher" /><span id="response" style="margin-left:10px">L'élève passe</span>
                                                                       </label>
                                                                   </div>
                                                               </div>
@@ -263,15 +263,15 @@ if (!isset($_SESSION['uid'])) {
         <script>
             $(document).ready(function () {
               // Switchery
-                console.log("111");
-                if ($(".js-switch")[0]) {
-                    var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-                    elems.forEach(function (html) {
-                        var switchery = new Switchery(html, {
-                            color: '#26B99A'
-                        });
-                    });
-                }
+                // console.log("111");
+                // if ($(".js-switch")[0]) {
+                //     var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+                //     elems.forEach(function (html) {
+                //         var switchery = new Switchery(html, {
+                //             color: '#26B99A'
+                //         });
+                //     });
+                // }
 
                 
 

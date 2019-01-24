@@ -51,8 +51,8 @@ class SubscritController
                    "matr"=>$matrGenerate,
                    "codeSlice"=>"1TRF",
                    "object"=>"FRSCO",
-                   "datepay"=>__DATE__,
-                   "timepay"=>__TIME__,
+                   "datepay"=>date('d/m/Y'),
+                   "timepay"=>date('H:i:s'),
                    "amount"=>$amount,
                    "anasco"=>$_SESSION['anasco'],
                    "userAgent"=>$_SESSION['uid'],
@@ -61,18 +61,18 @@ class SubscritController
                $db->commit();
 
 
-            $Query="INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT) ".
-            " VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent)";
+            $Query="INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT,_ANASCO)
+             VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent,:anasco)";
             $db->beginTransaction();
             $query_execute=$db->prepare($Query);
             $query_execute->execute(array(
                 "matr"=>$matrGenerate,
                 "codeClass"=>$level,
                 "codeSection"=>$section,
-                "dateSub"=>__DATE__,
+                "dateSub"=>date('d/m/Y'),
                 "codePay"=>$payGenerate,
-                "codeAgent"=>$_SESSION['uid']
-
+                "codeAgent"=>$_SESSION['uid'],
+                "anasco"    =>  $_SESSION['anasco']
             ));
             $db->commit();
 

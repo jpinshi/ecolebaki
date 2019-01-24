@@ -17,6 +17,7 @@ if (isset($_SESSION['uid'])) {
         $_POST['birthday'],
         $_POST['section'],
         $_POST['level'],
+        $_POST['amount'],
         $_POST['picture']
       );
     }else if($_POST['reenrol']){

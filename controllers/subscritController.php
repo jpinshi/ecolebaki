@@ -13,7 +13,7 @@ class SubscritController
         echo json_encode($this);
     }
 
-    public function Add($name,$sex,$phone,$town,$address,$born_town,$birthday,$section,$level,$picture,$amount = 10){
+    public function Add($name,$sex,$phone,$town,$address,$born_town,$birthday,$section,$level,$amount,$picture){
         try{
         $matrGenerate=$_SESSION['direction'].time();
         if (strlen($picture)>0) {
@@ -53,7 +53,7 @@ class SubscritController
                    "object"=>"FRSCO",
                    "datepay"=>__DATE__,
                    "timepay"=>__TIME__,
-                   "amount"=>"10",
+                   "amount"=>$amount,
                    "anasco"=>$_SESSION['anasco'],
                    "userAgent"=>$_SESSION['uid'],
                    "department"=>$_SESSION['direction']

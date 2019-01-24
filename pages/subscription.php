@@ -177,7 +177,8 @@ session_start();
                                                 <div class="input-group-addon">
                                                     <span class="fa fa-th"></span>
                                                 </div>
-                                            </div>
+                                        </div>
+                                        
                                         <div class="form-group">
                                             <label>Section</label>
                                             <select name="section" class="form-control" onchange="changedSection()" id="cboSection" name="section">
@@ -185,21 +186,18 @@ session_start();
                                                 <option>MATERNELLE</option>
                                                 <option>PRIMAIRE</option>
 
-
                                             </select>
                                         </div>
                                         <div class="form-group">
                                         <label for="">Niveau</label>
                                         <select name="level" class="form-control" id="cboLevel" name="level">
                                                 <option>-----</option>
-
-
-
-
                                             </select>
                                         </div>
-
-
+                                        <div class="form-group">
+                                            <label class="control-label"  for="inputSuccess">Montant</label>
+                                            <input type="number" name="amount" class="form-control" min="1" required>
+                                        </div>
                                         <div class="form-group" style="display:none;">
                                             <label class="control-label" for="inputSuccess">Base64</label>
                                             <input name="picture" id="picture" type="text" class="form-control">

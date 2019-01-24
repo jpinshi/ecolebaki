@@ -50,7 +50,7 @@ app.controller('ViewPupilsCtrl',function($scope,$http){
                 var data = table.data();
                 var index=e.target._DT_CellIndex.row;
                 console.log(data);
-                alert( 'You clicked on '+data[index].id+'\'s row' );
+                // alert( 'You clicked on '+data[index].id+'\'s row' );
 
         } );
 
@@ -69,7 +69,7 @@ var iTable;
 
         var title_navbar=document.querySelector('#title_navbar');
         title_navbar=title_navbar.innerHTML.split('|')[1].trim();
-        alert(title_navbar);
+        // alert(title_navbar);
         // var url_get_list='listpupils/'+title_navbar+'/SUB/'+year;
         var url_get_list='listpupils/'+title_navbar+'/'+year;
         console.log('URL 5:',url_get_list);

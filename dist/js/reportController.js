@@ -19,20 +19,24 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
 
       switch (document.querySelector('#frais').value) {
           case "1TRF":
-              document.querySelector('.txt_feesType').innerHTML = "1ère Tranche";
+              $('.txt_feesType').html("1ère Tranche");
               break;
           case "2TRF":
-              document.querySelector('.txt_feesType').innerHTML = "2ème Tranche";
+              $('.txt_feesType').html("2ème Tranche");
               break;
           case "3TRF":
-              document.querySelector('.txt_feesType').innerHTML = "3ème Tranche";
+              $('.txt_feesType').html("3ème Tranche");
               break;
           case "all":
-              document.querySelector('.txt_feesType').innerHTML = "Tout";
+              $('.txt_feesType').html("Tout");
               break;
           default:
               break;
       }
+
+      $('#txt_feesTypeR').html($('.txt_feesType').html());
+
+      
     }
 
     $scope.sendRequestTab = function () {
@@ -187,7 +191,8 @@ app.controller('CtrlStudent', function (factoryStudent,$scope,$filter) {
         document.querySelector('#blockPrinter').style = "display:block";
         document.querySelector('#menuBar').style.display="none";
         document.querySelector('#header').style.display="none";
-
+        
+        
     }
     $scope.print=function(){
         document.querySelector('#btnprint').style.display="none";

@@ -20,3 +20,4 @@ RewriteRule ^layoutinvoice$ controllers/pdf.php
 RewriteRule ^reinscriptions$ pages/reinscriptions.php
 RewriteRule ^reenrol$ controllers/TaskPupils.php
 RewriteRule ^pupilstoreenrol$ controllers/TaskPupils.php
+RewriteRule ^getdashboarddata$ controllers/TaskPupils.php

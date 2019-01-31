@@ -18,8 +18,9 @@
             $SQL_PREPARE->execute();
             $SlicePayment=$SQL_PREPARE->fetchAll(PDO::FETCH_OBJ);
 
-            $Query="SELECT _MATR,_USERNAME,_PRIORITY,_CODE_DIRECTION,_ANASCO,_NAME FROM t_login login JOIN t_agent agent ON login._MATR_AGENT=agent._MATR".
-                   " WHERE login._USERNAME=:userid AND login._PWD=:pwd";
+            $Query="SELECT _MATR,_USERNAME,_PRIORITY,_CODE_DIRECTION,_ANASCO,_NAME FROM t_login login 
+                    JOIN t_agent agent ON login._MATR_AGENT=agent._MATR
+                    WHERE login._USERNAME=:userid AND login._PWD=:pwd";
 
                    $SQL_PREPARE=$db->prepare($Query);
                    $SQL_PREPARE->execute(array(
@@ -73,46 +74,19 @@
 
         public function getPupils($direction,$priority,$anasco){
             $db=getDB();
-            switch ($priority) {
-                case 'user':
-                    $Query="SELECT ".
-                    "students._MAT,students._NAME,students._SEX,students._PICTURE FROM t_students AS students ".
-                   " JOIN db_baki.t_payment payments ON students._MAT=payments._MATR".
-                   " WHERE payments._ANASCO=:anasco AND payments._CODE_SLICE='SUB' OR payments._CODE_SLICE='RESUB'".
-                   " payments._DEPARTMENT=:direction";
-                  // " GROUP BY students._MAT";
-                    $sql=$db->prepare($Query);
-                    $sql->execute
-                    (
-                        array
-                        (
-                            'direction'=>$direction,
-                            'anasco'=>$anasco
-                        )
-                    );
-                    $response=$sql->fetchAll(PDO::FETCH_OBJ);
+           
+            $Query="SELECT DISTINCT(students._MAT),students._NAME,students._SEX,students._PICTURE 
+                    FROM t_students students
+                    JOIN t_payment pay ON students._MAT=pay._MATR
+                    WHERE pay._DEPARTMENT = :direction AND pay._ANASCO = :anasco";
+            // " GROUP BY students._MAT";
+            $sql=$db->prepare($Query);
+            $sql->execute([
+                'direction'=>$direction,
+                'anasco'=>$anasco
+            ]);
+            $response=$sql->fetchAll(PDO::FETCH_OBJ);
 
-                break;
-
-                default:
-                $Query="SELECT ".
-                "students._MAT,students._NAME,students._SEX,students._PICTURE FROM t_students AS students ".
-                "JOIN t_payment payments ON students._MAT=payments._MATR".
-                " WHERE payments._ANASCO=:anasco AND payments._CODE_SLICE=:sub OR payments._CODE_SLICE=:resub";
-             //   " GROUP BY students._MAT";
-                    $sql=$db->prepare($Query);
-                    $sql->execute
-                    (
-                        array
-                        (
-                            'anasco'=>$anasco,
-                            'sub'=>'SUB',
-                            'resub'=>'RESUB'
-                        )
-                    );
-                    $response=$sql->fetchAll(PDO::FETCH_OBJ);
-                break;
-            }
             return $response;
         }
 

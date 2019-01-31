@@ -29,15 +29,20 @@ if (isset($_SESSION['uid'])) {
         $sub->get_list_pupils($_GET['depart'],$_GET['year']);
       }else{
         $current_page=$_SERVER['REQUEST_URI'];
-        if (strpos($current_page,'listpupils')) {
-          $sub->get_list_pupils_actuals();
+        if(strpos($current_page,'getdashboarddata')){
+          echo PupilController::countPupilsByPromo();
+        }else{
+          if (strpos($current_page,'listpupils')) {
+            $sub->get_list_pupils_actuals();
+          }
+          if (strpos($current_page,'listyears')) {
+            echo json_encode($sub->get_list_years());
+          }
+          if (strpos($current_page,'pupilstoreenrol')) {
+            echo PupilController::getPupilsToReEnrol();
+          }
         }
-        if (strpos($current_page,'listyears')) {
-          echo json_encode($sub->get_list_years());
-        }
-        if (strpos($current_page,'pupilstoreenrol')) {
-          echo PupilController::getPupilsToReEnrol();
-        }
+        
       }
   }
 

@@ -14,12 +14,12 @@ class PaymentController {
                     FROM t_students pupils
                     JOIN t_payment payments ON pupils._MAT=payments._MATR
                     JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
+                    WHERE payments._DEPARTMENT=:department AND subscrit._ANASCO=:year";
     private static $reqGetPupilsPaymentsList = "SELECT DISTINCT(pupils._ID) AS id, pupils._MAT AS matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,subscrit._CODE_SECTION AS section, subscrit._ANASCO
                     FROM t_students pupils
                     JOIN t_payment payments ON pupils._MAT=payments._MATR
                     JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
+                    WHERE payments._DEPARTMENT=:department AND subscrit._ANASCO=:year";
     private static $reqInsertPay = "INSERT INTO t_payment (_IDPAY,_MATR,_CODE_SLICE,_OBJECT,_DATEPAY,_TIMEPAY,_AMOUNT,_ANASCO,_USER_AGENT,_DEPARTMENT)
                     VALUES(:idpay,:matr,:codeslice,:objectpay,:datepay,:timepay,:amount,:anasco,:user,:department)";
     private static $reqGetSliceInfos = "SELECT spay.*, sfees._LABEL AS _OBJECT_PAY FROM t_slice_payment spay

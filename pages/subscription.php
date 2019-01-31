@@ -74,7 +74,7 @@ session_start();
                             <!-- /.modal -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Nouvel eleve <i class="fa fa-user fa-fw" style="float:right"></i></h1>
+                    <h1 class="page-header">Nouvel élève <i class="fa fa-user fa-fw" style="float:right"></i></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -105,12 +105,12 @@ session_start();
                                     <form method="post">
                                         <div class="form-group">
                                             <label class="control-label" for="inputSuccess">Nom complet</label>
-                                            <input type="text" name="name" class="form-control">
+                                            <input type="text" name="name" class="form-control" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Genre</label>
-                                            <select class="form-control" name="sex">
-                                                <option>-----</option>
+                                            <select class="form-control" name="sex" required>
+                                                <option></option>
                                                 <option value="M">Masculin</option>
                                                 <option value="F">Feminin</option>
 
@@ -118,8 +118,8 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label>Province d'origine</label>
-                                            <select class="form-control" name="town">
-                                                <option>-----</option>
+                                            <select class="form-control" name="town" required>
+                                                <option></option>
                                                 <option>Bas-Uele</option>
                                                 <option>Équateur</option>
                                                 <option>Haut-Katanga</option>
@@ -152,11 +152,11 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="inputSuccess">Adresse</label>
-                                            <input type="text" name="address" class="form-control">
+                                            <input type="text" name="address" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label"  for="inputSuccess">Telephone</label>
-                                            <input type="text" name="phone" class="form-control">
+                                            <label class="control-label"  for="inputSuccess">Téléphone</label>
+                                            <input type="text" name="phone" class="form-control" required>
                                         </div>
 
 
@@ -167,13 +167,13 @@ session_start();
 
                                         <div class="form-group">
                                             <label class="control-label" for="inputSuccess">Lieu de naissance</label>
-                                            <input type="text" name="born_town" class="form-control">
+                                            <input type="text" name="born_town" class="form-control" required>
                                         </div>
 
                                              <label>Date de naissance</label>
                                         <div class="input-group date dp" style="" data-provider="datepicker">
 
-                                                <input id="date1Export" style="" placeholder="From" type="text" name="birthday" class="form-control" />
+                                                <input id="date1Export" style="" placeholder="" type="text" name="birthday" class="form-control" required/>
                                                 <div class="input-group-addon">
                                                     <span class="fa fa-th"></span>
                                                 </div>
@@ -181,8 +181,8 @@ session_start();
                                         
                                         <div class="form-group">
                                             <label>Section</label>
-                                            <select name="section" class="form-control" onchange="changedSection()" id="cboSection" name="section">
-                                                <option>-----</option>
+                                            <select name="section" class="form-control" onchange="changedSection()" id="cboSection" name="section" required>
+                                                <option></option>
                                                 <option>MATERNELLE</option>
                                                 <option>PRIMAIRE</option>
 
@@ -190,8 +190,8 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                         <label for="">Niveau</label>
-                                        <select name="level" class="form-control" id="cboLevel" name="level">
-                                                <option>-----</option>
+                                        <select name="level" class="form-control" id="cboLevel" name="level" required>
+                                                <option></option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -200,7 +200,7 @@ session_start();
                                         </div>
                                         <div class="form-group" style="display:none;">
                                             <label class="control-label" for="inputSuccess">Base64</label>
-                                            <input name="picture" id="picture" type="text" class="form-control">
+                                            <input name="picture" id="picture" type="text" class="form-control" required>
                                         </div>
                                         <button id="btnAdd" type="submit" class="btn btn-primary btn-circle btn-lg"><i class="fa fa-plus"></i>
                                         </button>

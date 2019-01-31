@@ -20,7 +20,7 @@ class SubscritController
                $fileImage=convertBase64ToImage($picture,time().".png");
 
         }else{
-            $picture='avatar.png';
+            $fileImage='avatar.png';
         }
         $db=getDB();
         $db->beginTransaction();
@@ -61,8 +61,8 @@ class SubscritController
                $db->commit();
 
 
-            $Query="INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT,_ANASCO)
-             VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent,:anasco)";
+            $Query="INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT,_ANASCO,_DEPARTMENT)
+             VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent,:anasco,:department)";
             $db->beginTransaction();
             $query_execute=$db->prepare($Query);
             $query_execute->execute(array(
@@ -72,7 +72,8 @@ class SubscritController
                 "dateSub"=>date('d/m/Y'),
                 "codePay"=>$payGenerate,
                 "codeAgent"=>$_SESSION['uid'],
-                "anasco"    =>  $_SESSION['anasco']
+                "anasco"    =>  $_SESSION['anasco'],
+                "department"=>$_SESSION['direction']
             ));
             $db->commit();
 
@@ -96,16 +97,16 @@ class SubscritController
 
          echo '<meta http-equiv="refresh" content=0;URL=invoice>';
        }catch(Exception $e){
-           echo $e->getMessage();
+           //echo $e->getMessage();
        }
     }
     public function get_list_pupils($direction,$year){
         $db=getDB();
         $query_sql="SELECT DISTINCT(pupils._ID) AS id, pupils._MAT AS matricule,pupils._NAME AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
         subscrit._CODE_SECTION AS section,pupils._PICTURE AS picture,pupils._PHONE AS phone, pupils._ADRESS AS adress, pupils._BIRTHDAY AS datenaiss,pupils._BIRTHPLACE as townBorn,pupils._PROVINCE AS townFrom
-                    FROM t_students AS pupils JOIN t_payment AS payments
+                    FROM t_students pupils JOIN t_payment payments
                     ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
+                    WHERE payments._DEPARTMENT=:department AND subscrit._ANASCO=:year";
         $query_execute=$db->prepare($query_sql);
         $query_execute->execute
         (
@@ -125,11 +126,10 @@ class SubscritController
 
 
         $db=getDB();
-        $query_sql="SELECT DISTINCT(pupils._ID) as id, pupils._MAT as matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,
-        subscrit._CODE_SECTION as section
-                    FROM t_students AS pupils JOIN t_payment AS payments
+        $query_sql="SELECT DISTINCT(pupils._ID) as id, pupils._MAT as matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,subscrit._CODE_SECTION as section
+                    FROM t_students pupils JOIN t_payment payments
                     ON pupils._MAT=payments._MATR JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
+                    WHERE payments._DEPARTMENT=:department AND subscrit._ANASCO=:year";
         $query_execute=$db->prepare($query_sql);
         $query_execute->execute
         (

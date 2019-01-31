@@ -340,7 +340,7 @@ if (!isset($_SESSION['uid'])) {
                                     Type de frais
                                 </td>
                                 <td>
-                                    : <span class="txt_feesType"></span>
+                                    : <span id="txt_feesTypeR"></span>
                                 </td>
                             </tr>
 

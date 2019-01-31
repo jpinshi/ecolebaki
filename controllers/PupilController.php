@@ -10,23 +10,120 @@ class PupilController {
                     FROM t_students pupils
                     JOIN t_payment payments ON pupils._MAT=payments._MATR
                     JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year";
+                    WHERE subscrit._DEPARTMENT=:department AND subscrit._ANASCO=:year";
     private static $reqGetPupilsToReEnrol = "SELECT DISTINCT(pupils._ID) AS id, pupils._MAT AS matricule,UPPER(pupils._NAME) AS name_pupil,pupils._SEX AS gender,subscrit._CODE_CLASS AS level,subscrit._CODE_SECTION AS section
                     FROM t_students pupils
                     JOIN t_payment payments ON pupils._MAT=payments._MATR
                     JOIN t_subscription subscrit ON pupils._MAT=subscrit._MATR_PUPIL
-                    WHERE _DEPARTMENT=:department AND subscrit._ANASCO=:year
+                    WHERE subscrit._DEPARTMENT=:department AND subscrit._ANASCO=:year
                     AND subscrit._MATR_PUPIL NOT IN (SELECT _MATR_PUPIL FROM t_subscription WHERE _ANASCO=:actualyear)";
     private static $reqInsertPay = "INSERT INTO t_payment (_IDPAY,_MATR,_CODE_SLICE,_OBJECT,_DATEPAY,_TIMEPAY,_AMOUNT,_ANASCO,_USER_AGENT,_DEPARTMENT) 
                     VALUES(:idpay,:matr,:codeslice,:objectpay,:datepay,:timepay,:amount,:anasco,:user,:department)";
-    private static $reqInsertCollegeYears = "INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT,_ANASCO)
-                    VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent,:anasco)";
+    private static $reqInsertCollegeYears = "INSERT INTO t_subscription (_MATR_PUPIL,_CODE_CLASS,_CODE_SECTION,_DATE_SUB,_CODE_PAY,_CODE_AGENT,_ANASCO,_DEPARTMENT)
+                    VALUES (:matr,:codeClass,:codeSection,:dateSub,:codePay,:codeAgent,:anasco,:department)";
     private static $reqGetSlice = "SELECT * FROM t_slice_payment WHERE _CODESLICE = ?";
     private static $reqGetSliceInfos = "SELECT spay.*, sfees._LABEL AS _OBJECT_PAY FROM t_slice_payment spay
                     JOIN t_school_fees sfees ON sfees._CODE = spay._CODE_FEES
                     WHERE spay._CODESLICE = ?";
     private static $getSliceSumPaidByPupil = "SELECT SUM(_AMOUNT) AS sum_slice_paid FROM t_payment WHERE _CODE_SLICE = ? AND _MATR = ?";
 
+    public static function countPupilsByPromo()
+    {
+        $db = getDB();
+        $query = "SELECT pupil._MAT AS matr, sub._CODE_CLASS AS class, sub._CODE_SECTION AS section, sub._ANASCO AS anasco
+                FROM t_students pupil
+                JOIN t_subscription sub ON pupil._MAT=sub._MATR_PUPIL
+                WHERE sub._DEPARTMENT=:department AND sub._ANASCO=:anasco OR sub._ANASCO=:last_anasco";
+        $year = explode('-',$_SESSION['anasco']);
+        $lastA = (int)$year[0] - 1;
+        $last = $lastA . '-' .$year[0];
+        $execute = queryDB($query,[
+            'department'    =>  $_SESSION['direction'],
+            'anasco'    =>  $_SESSION['anasco'],
+            'last_anasco'    =>  $last
+        ]);
+        $ds = $execute->fetchAll();
+        $data = [];
+        $M = [];
+        $P = [];
+        $current = $_SESSION['anasco'];
+        for ($i=1; $i <= 6 ; $i++) { 
+               $P[$current][$i] = 0;
+               $P[$last][$i] = 0;
+        }
+        for ($i=1; $i <= 3 ; $i++) { 
+            $M[$current][$i] = 0;
+            $M[$last][$i] = 0;
+        }
+        
+        foreach ($ds as $value) {
+            
+            switch ($value->class) {
+                case 1:
+                    if($value->section == 'MATERNELLE'){
+                        $M[$value->anasco][1]++;
+                    }else{
+                        $P[$value->anasco][1]++;
+                    }
+                    break;
+                case 2:
+                    if($value->section == 'MATERNELLE'){
+                        $M[$value->anasco][2]++;
+                    }else{
+                        $P[$value->anasco][2]++;
+                    }
+                    break;
+
+                case 3:
+                    if($value->section == 'MATERNELLE'){
+                        $M[$value->anasco][3]++;
+                    }else{
+                        $P[$value->anasco][3]++;
+                    }
+                    break;
+
+                case 4:
+                    $P[$value->anasco][4]++;
+                    break;
+
+                case 5:
+                    $P[$value->anasco][5]++;
+                    break;
+
+                case 6:
+                    $P[$value->anasco][6]++;
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+           
+        }
+
+        for ($class=1; $class <= 3; $class++) { 
+            $suffix = ($class == 1) ? 'ere ' : 'eme'; 
+            $data[] = [
+                'promotion' => $class.'º Ma.',
+                'current' => $M[$current][$class],
+                'last' => $M[$last][$class]
+            ];
+        }
+
+        for ($class=1; $class <= 6; $class++) { 
+            $suffix = ($class == 1) ? 'ere ' : 'eme'; 
+            $data[] = [
+                'promotion' => $class.'º Pri.',
+                'current' => $P[$current][$class],
+                'last' => $P[$last][$class]
+            ];
+        }
+
+        
+
+        return json_encode($data);
+
+    }
 
     public static function getPupilsToReEnrol() {
         
@@ -131,12 +228,13 @@ class PupilController {
             $execQuery2 = $db->prepare(self::$reqInsertCollegeYears);
             $execQuery2->execute([
                 "matr" => $data['mat_pupil'],
-                "codeClass" => $data['new_level'], //je dois verifier si la transaction fonctionne, pour cela je dois mettre une valeur vide ici
+                "codeClass" => substr($data['new_level'],0,1),
                 "codeSection" => $data['new_section'],
                 "dateSub" => date('d/m/Y'),
                 "codePay" => $payGenerate,
                 "codeAgent" => $_SESSION['uid'],
-                "anasco" => $_SESSION['anasco']
+                "anasco" => $_SESSION['anasco'],
+                "department" => $_SESSION['direction']
             ]);
 
             $resultSliceInfos = $db->prepare(self::$reqGetSlice);
